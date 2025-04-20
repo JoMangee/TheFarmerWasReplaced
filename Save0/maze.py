@@ -1,4 +1,5 @@
 # From: https://gist.github.com/zapakh/9a9b39a07964bbd27ab8cbd05ca35501
+# and From: https://github.com/AnonimiAngels/the_farmer_was_replaced/blob/master/maze.py
 from utils import *
 # Make sure you have enough Fertilizer before starting.
 def do_maze(iterations=1):
