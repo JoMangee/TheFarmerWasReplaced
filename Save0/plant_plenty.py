@@ -4,17 +4,38 @@ global plant2
 global oplant2
 plants = Entities.Bush
 plant2 = Entities.Tree
-makehay = False
+global makehay
+makehay = True
 
+global waittil
 waittil = get_time()
 oplant2 = plant2
+global occurx
 occurx = 2
+global occury
 occury = 2
 change_hat(Hats.Straw_Hat)
 #change_hat(Hats.Dinosaur_Hat) 
+global movediry
 movediry = North 
+global movedirx
 movedirx = East 
-while(True):
+
+def plant_run(vplants = Entities.Bush, vplant2 = Entities.Tree, vmakehay = False,voccurx =2, voccury = 2):
+   global plants
+   plants = vplants
+   global plant2
+   plant2 = vplant2
+   global makehay
+   makehay = vmakehay
+   global occurx
+   occurx = voccurx
+   global occury
+   occury = voccury
+   plant_plenty()
+
+def plant_plenty():
+ while(num_items(Items.Hay) < 100000):
     #change_hat(Hats.Dinosaur_Hat)
     for i in range(get_pos_x(),get_world_size(),1):
         #quick_print(i,get_pos_x(),get_pos_y(),get_world_size())
@@ -37,6 +58,7 @@ while(True):
             use_item(Items.Water)
             if (get_ground_type() == Grounds.Soil):
               plant(Entities.Sunflower)
+            global waittil
             if(get_time()>waittil and not use_item(Items.Fertilizer)):
                    print("No fertilizer!")
                    waittil = get_time() + 20
@@ -63,6 +85,8 @@ while(True):
                     if(not get_ground_type() == Grounds.Grassland):
                         till()
                 #use_item(Items.Fertilizer)
+        global movedirx
+        global movediry
         if(not move(movedirx)):
            if movedirx == West:
                movedirx = West#East
@@ -76,10 +100,13 @@ while(True):
                movediry = North        
        move(movediry)
        
-change_hat(Hats.Straw_Hat)
-if can_harvest():
+ change_hat(Hats.Straw_Hat)
+ if can_harvest():
    harvest()
-move(movedirx)
-if can_harvest():
+ move(movedirx)
+ if can_harvest():
    harvest()
-move(movediry)
+ move(movediry)
+ 
+ 
+plant_plenty()

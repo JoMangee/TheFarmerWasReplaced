@@ -1,0 +1,1 @@
+leaderboard_run(Leaderboards.Hay, "plant_plenty", 256)
