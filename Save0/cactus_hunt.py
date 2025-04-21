@@ -1,6 +1,6 @@
 #clean up
 from utils import *
-
+soil_grid()
 def sortCactus():
     allus = 0
     if get_entity_type() == Entities.Cactus:

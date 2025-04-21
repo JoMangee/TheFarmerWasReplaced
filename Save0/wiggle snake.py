@@ -1,26 +1,39 @@
 wosize = get_world_size()
+from utils import *
+change_hat(Hats.Straw_Hat)
+if (num_items(Items.Power) < 25):
+    put_and_harvest(Entities.Sunflower)
 print("Looking for apples")
 
 next_x = wosize // 2
 next_y = wosize // 2
 noapplecount = 1
-
+global needawigglepos
+if wosize%2:
+        needawigglepos = wosize - 2
+else:
+        needawigglepos = wosize - 1
+        
 def checkapple(applecount=1):
     global noapplecount
     global next_x 
     global next_y
     global wosize
+    global needawigglepos
     if noapplecount >= wosize * wosize * 2:
         change_hat(Hats.Straw_Hat)
         if get_ground_type() == Grounds.Grassland:
             till()
+        if (num_items(Items.Power) < 25):
+                print("Powering up")
+                put_and_harvest(Entities.Sunflower)
         change_hat(Hats.Dinosaur_Hat)
         noapplecount = 1
     if get_entity_type() == Entities.Apple:
         next_x, next_y = measure()
         quick_print("Apple at (",next_x,",",next_y,")?")
         #quick_print(next_x, next_y)
-        if (next_x == wosize - 2 and next_y == 1):
+        if (not wosize%2 and next_x == wosize - 2 and next_y == 1):
             print("Next apple bad")
             return True, next_x, next_y, True
         noapplecount = 1 # Reset apple count
@@ -29,7 +42,7 @@ def checkapple(applecount=1):
         if can_harvest():
             harvest()
         noapplecount = applecount + 1 #increment apple count
-        return False, next_x, next_y, (next_x == wosize - 2 and next_y == 1)
+        return False, next_x, next_y, (next_x == needawigglepos and next_y == 1)
 
 change_hat(Hats.Dinosaur_Hat)
 checkapple(noapplecount)
@@ -37,7 +50,16 @@ checkapple(noapplecount)
 def setupright():
     global noapplecount
     noapplecount = 1
+    global needawigglepos
+    if wosize%2:
+        needawigglepos = wosize - 2
+    else:
+        needawigglepos = wosize - 1
     change_hat(Hats.Straw_Hat)
+
+    if (num_items(Items.Power) < 25):
+                print("Powering up")
+                put_and_harvest(Entities.Sunflower)
     if wosize % 2:
         while get_pos_x() != wosize - 1:
             move(East)
@@ -76,6 +98,7 @@ def dowriggle():
     global noapplecount
     global next_x
     global next_y
+    global needawigglepos
     if wosize%2:
         needawigglepos = wosize - 2
     else:
@@ -89,7 +112,8 @@ def dowriggle():
     #do_a_flip()
     while get_pos_x() < needawigglepos:
         for _ in range(get_pos_y(), wosize - 1):
-            move(North)
+            if not move(North):
+               continue #we hit our tail?
             checkapple(noapplecount)
         move(East)
         checkapple(noapplecount)

@@ -71,8 +71,13 @@ def try_plant(entity):
 
 def put_and_harvest(entity = None, seed_item = None):
     world_size = get_world_size()
-    buy_grid_seed(seed_item)
-
+    #buy_grid_seed(seed_item)
+    #need to refactor for new planting costs
+    cost = get_cost(entity)
+    for item in cost:
+        if num_items(item) < cost[item]:
+            do_a_flip()
+            print ("Need ",cost[item]," more ",item," to plant")
     for i in range(world_size):
         for j in range(world_size):
             try_harvest()
